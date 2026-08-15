@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>B-Link 智能客悦系统 | 0到1全链路重构</title>
+  <style>
+    /* 极简画册风重置与变量 */
+    :root {
+      --text-main: #1a1a1a;
+      --text-muted: #666666;
+      --bg-color: #fcfcfc;
+      --max-width: 1080px;
+      /* 导航栏与点缀颜色变量 */
+      --nav-bg: #111111;
+      --primary-cta: #bbf706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      color: var(--text-main);
+      background: var(--bg-color);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* 图片基础样式 */
+    .img-placeholder {
+      background: #eaeaea;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 14px;
+      text-align: center;
+      overflow: hidden;
+      width: 100%;
+    }
+    .img-placeholder img { width: 100%; height: auto; display: block; object-fit: cover; cursor: zoom-in; }
+    
+    /* 特定区域预设最小高度 */
+    .hero-img .img-placeholder { aspect-ratio: 16 / 9; max-width: 1200px; margin: 0 auto; }
+    .standard-img .img-placeholder { aspect-ratio: 16 / 9; margin-top: 40px; }
+    .portrait-img .img-placeholder { aspect-ratio: 3 / 4; }
+
+    /* 完整展示无裁剪的自适应图片样式 */
+    .img-auto { 
+      width: 100%; 
+      height: auto; 
+      display: block; 
+      border-radius: 12px; 
+      background: #eaeaea; 
+      cursor: zoom-in;
+    }
+
+    /* 悬浮导航栏核心样式 */
+    .nav-wrapper {
+        position: fixed;
+        top: 24px;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .floating-nav {
+        background-color: var(--nav-bg);
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0.5rem 0.5rem 2rem;
+        gap: 3rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-logo {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        letter-spacing: -0.5px;
+    }
+
+    .nav-logo span {
+        color: var(--primary-cta);
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .nav-links a {
+        color: #9ca3af;
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+        color: #ffffff;
+    }
+
+    .nav-cta {
+        background-color: #ffffff;
+        color: #111111;
+        padding: 0.6rem 1.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: transform 0.2s;
+    }
+
+    .nav-cta:hover {
+        transform: scale(1.02);
+    }
+
+    /* 通用容器与留白 */
+    .section { padding: 120px 0; }
+    .section-light { background: #f7f7f7; }
+    .container { width: min(var(--max-width), calc(100% - 48px)); margin: 0 auto; }
+    
+    /* 首屏及各模块标题区域 */
+    .hero { padding: 180px 0 80px; text-align: center; }
+    .eyebrow { color: var(--text-muted); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 24px; display: block; }
+    .hero h1 { font-size: 48px; font-weight: 600; line-height: 1.2; margin-bottom: 32px; letter-spacing: -1px; }
+    .hero p { max-width: 680px; margin: 0 auto; color: var(--text-muted); font-size: 18px; line-height: 1.8; }
+    
+    .section-header { max-width: 720px; margin: 0 auto 48px; text-align: center; }
+    .section-header h2 { font-size: 32px; font-weight: 600; margin-bottom: 20px; }
+    .section-header p { color: var(--text-muted); font-size: 16px; }
+    .section-header.left-align { text-align: left; margin: 0 0 40px 0; max-width: 800px; }
+
+    /* 角色职责与流程网格 */
+    .role-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 40px; }
+    .role-item h3 { font-size: 18px; margin-bottom: 12px; }
+    .role-item p { color: var(--text-muted); font-size: 14px; }
+
+    /* 双图并排布局 */
+    .two-col-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+
+    /* 左右交替图文排版 */
+    .feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-bottom: 120px; }
+    .feature-row:last-child { margin-bottom: 0; }
+    .feature-row.reverse { direction: rtl; }
+    .feature-row.reverse > * { direction: ltr; }
+
+    /* 核心交互流程专属样式：大卡片与大圆角 */
+    .process-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 48px;
+      margin-bottom: 64px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.04);
+      transition: transform 0.3s ease;
+    }
+    .process-card:last-child { margin-bottom: 0; }
+    
+    .process-header { max-width: 800px; margin-bottom: 40px; }
+    .process-header h3 { font-size: 26px; margin-bottom: 16px; font-weight: 600; color: var(--text-main); }
+    .process-header p { color: var(--text-muted); font-size: 16px; line-height: 1.8; }
+    
+    .process-grid { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 24px; 
+      margin-bottom: 24px; 
+    }
+    
+    .process-img-item {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 16px;
+      border: 1px solid #f0f0f0;
+      background: #fcfcfc;
+      cursor: zoom-in;
+    }
+    
+    .process-ui-long {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 16px;
+      border: 1px solid #f0f0f0;
+      cursor: zoom-in;
+    }
+
+    /* 灯箱弹层样式（支持长图垂直滚动浏览） */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(8px);
+      overflow-y: auto;
+      padding: 60px 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .lightbox-modal.active {
+      display: flex;
+      opacity: 1;
+    }
+    .lightbox-modal img {
+      max-width: 1000px;
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 8px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+      transform: scale(0.96);
+      transition: transform 0.3s ease;
+    }
+    .lightbox-modal.active img {
+      transform: scale(1);
+    }
+    .lightbox-close {
+      position: fixed;
+      top: 30px;
+      right: 40px;
+      color: #ffffff;
+      font-size: 36px;
+      font-weight: 300;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.15);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 1001;
+    }
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* 一键回到顶部悬浮按钮样式（已改为黑色） */
+    .back-to-top {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      width: 56px;
+      height: 56px;
+      background: #111111;
+      color: #ffffff;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: #333333;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    }
+    .back-to-top svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* 数据成果网格 */
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; text-align: center; margin-top: 60px; }
+    .metric-item strong { display: block; font-size: 56px; font-weight: 300; line-height: 1; margin-bottom: 12px; color: var(--text-main); }
+    .metric-item span { color: var(--text-muted); font-size: 14px; }
+
+    /* ======== 无边框自然过渡的底部联系方式 ======== */
+    .footer-section {
+      padding: 80px 0 60px;
+      background: var(--bg-color);
+    }
+    .contact-layout {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 80px;
+      padding: 20px 0;
+    }
+    .contact-left {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    .footer-avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #eaeaea;
+      flex-shrink: 0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    }
+    .contact-info h2 {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .contact-info p {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+    .contact-right {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 180px;
+    }
+    .contact-right span {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      border: 1px solid #111111;
+      border-radius: 50px;
+      color: #111111;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.2s;
+      background: transparent;
+    }
+    .btn-outline:hover {
+      background: #111111;
+      color: #ffffff;
+    }
+    .footer-copyright {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      border-top: 1px solid #eaeaea;
+      padding-top: 32px;
+    }
+
+    @media (max-width: 900px) {
+      .role-grid { grid-template-columns: 1fr; }
+      .feature-row, .two-col-grid { grid-template-columns: 1fr; gap: 40px; }
+      .feature-row { margin-bottom: 60px; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 36px; }
+      .lightbox-close { top: 20px; right: 20px; width: 40px; height: 40px; font-size: 30px; }
+      .back-to-top { bottom: 24px; right: 24px; width: 48px; height: 48px; }
+      .nav-links { display: none; }
+      
+      /* 底部模块移动端适配 */
+      .contact-layout {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 32px;
+      }
+      .contact-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+      }
+      .contact-right {
+        width: 100%;
+        margin-top: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部悬浮导航 -->
+  <div class="nav-wrapper">
+      <nav class="floating-nav">
+          <a href="../index.html" class="nav-logo">portfolio<span>.</span></a>
+          <div class="nav-links">
+              <a href="../index.html#work">精选作品</a>
+              <a href="../index.html#about">关于我</a>
+          </div>
+          <a href="../index.html#contact" class="nav-cta">联系我</a>
+      </nav>
+  </div>
+
+  <!-- 首屏 -->
+  <header class="hero">
+    <div class="container">
+      <span class="eyebrow">B端 SaaS 系统 · 从 0 到 1 架构构建</span>
+      <h1>B-Link 智能客悦系统，<br>全链路数字化新生</h1>
+      <p>这是一个从零开始打造的 SaaS 行业一体化 CRM 系统。我们摒弃了传统的碎片化工具，旨在打造一个底层逻辑统一、跨越营销、销售与售后边界的全新数字化工作台。</p>
+    </div>
+  </header>
+
+  <!-- 首屏大图占位 -->
+  <div class="container hero-img">
+    <div class="img-placeholder">
+      <img src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/00_hero_cover.png" alt="项目封面大图 / 设备样机" onerror="this.style.display='none'; this.parentNode.innerHTML='00_hero_cover.png<br>建议尺寸: 1920x1080';">
+    </div>
+  </div>
+
+  <!-- 1. 项目背景与目标 -->
+  <section class="section" id="background">
+    <div class="container">
+      <div class="section-header">
+        <h2>01. 项目背景与目标</h2>
+        <p>SaaS 行业长久以来面临着“高客单价获客难、长决策周期转化难、重配置属性交付难”的痛点。市面上的通用系统无法满足业务流转需求，亟需从 0 开始构建一套深度贴合该行业属性的专属闭环系统。我们的目标是：实现全时段自动化获客、无缝化跨部门交接，以及智能化的售后支持体系，以设计赋能业务增长。</p>
+      </div>
+      <div class="standard-img">
+        <div class="img-placeholder">
+          <img src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/01_background_objectives.png" alt="业务痛点与目标推导图" onerror="this.style.display='none'; this.parentNode.innerHTML='01_background_objectives.png<br>展示痛点分析与目标蓝图';">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 角色职责与设计流程 -->
+  <section class="section section-light" id="process">
+    <div class="container">
+      <div class="section-header left-align">
+        <h2>02. 角色职责与设计流程</h2>
+        <p>作为本项目的 UI/UX 主设计师，我主导了从业务调研、信息架构搭建到高保真界面落地的全周期体验设计，并在执行中深入应用 HTML 基础与前端协同验收，结合 AI 工具辅助日常工作流提效。</p>
+      </div>
+      
+      <div class="role-grid">
+        <div class="role-item">
+          <h3>需求拆解与架构构建</h3>
+          <p>对接运营、销售与管理层，梳理多角色业务流，从 0 规划庞大系统的信息架构与 RBAC 权限体系。</p>
+        </div>
+        <div class="role-item">
+          <h3>交互推演与原型落地</h3>
+          <p>绘制核心业务泳道图，输出高保真界面与关键路径的可交互原型，确保跨部门流转逻辑严密闭环。</p>
+        </div>
+        <div class="role-item">
+          <h3>组件规范与前端协同</h3>
+          <p>建立具有高复用性的底层 UI 组件库，结合前端开发逻辑走查视觉还原度，保障系统的可扩展性与一致性。</p>
+        </div>
+      </div>
+      
+      <div class="standard-img">
+        <div class="img-placeholder">
+          <img src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/02_design_process.png" alt="设计流程与方法论图表" onerror="this.style.display='none'; this.parentNode.innerHTML='02_design_process.png<br>展示完整的设计工作流与时间线';">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 用户与需求调研 -->
+  <section class="section" id="research">
+    <div class="container">
+      <div class="section-header">
+        <h2>03. 用户与需求调研</h2>
+        <p>新系统构建前，我们深入业务一线，对销售与售后团队的真实工作流进行了全盘梳理。在此次调研中，主要聚焦于两大核心痛点：一是跨部门沟通时存在的严重信息断层；二是高频重复的基础咨询对业务线人力的过度消耗。</p>
+      </div>
+      <div class="two-col-grid">
+        <img class="img-auto" src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/03_research_1.png" alt="业务线核心痛点调研分析一" onerror="this.src=''; this.alt='03_research_1.png 未找到'; this.style.padding='60px';">
+        <img class="img-auto" src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/03_research_2.png" alt="业务线核心痛点调研分析二" onerror="this.src=''; this.alt='03_research_2.png 未找到'; this.style.padding='60px';">
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 产品结构图 -->
+  <section class="section section-light" id="architecture">
+    <div class="container">
+      <div class="section-header left-align">
+        <h2>04. 全局产品结构树</h2>
+        <p>基于“全知视角与角色赋能”原则，摒弃模块拼凑思路，从底层重新搭建了覆盖“全局驾驶舱、营销运营侧、销售跟进侧、售后服务侧及系统基础能力”的五大核心矩阵架构。</p>
+      </div>
+      <div class="standard-img">
+        <div class="img-placeholder">
+          <img src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/04_product_architecture.png" alt="系统功能信息架构图" onerror="this.style.display='none'; this.parentNode.innerHTML='04_product_architecture.png<br>展示完整的思维导图或架构树';">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 交互设计方案展示 -->
+  <section class="section section-light" id="interaction">
+    <div class="container">
+      <div class="section-header">
+        <h2>05. 核心交互方案展示</h2>
+        <p>直击业务痛点，推演并重塑了三条最重要的流转链路。</p>
+      </div>
+      
+      <!-- 链路 1：夜间自动化获客闭环 -->
+      <div class="process-card">
+        <div class="process-header">
+          <h3>01 夜间自动化获客闭环</h3>
+          <p>设计智能兜底接待流程。当夜间无人工在线时，系统自动下发产品资料并引导留资，随后基于地域或轮询规则在次日自动推送到销售的统一工作台，将无效流失转变为精准商机。</p>
+        </div>
+        <div class="process-grid">
+          <img class="process-img-item" src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/image_715e89.png" alt="核心业务流程一：夜间获客与自动分配">
+          <img class="process-img-item" src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/image_715e6c.png" alt="夜间获客与自动分配业务泳道图">
+        </div>
+        <img class="process-ui-long" src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/image_715e4b.png" alt="夜间获客闭环关键界面设计">
+      </div>
+
+      <!-- 链路 2：销售与售后的标准化交接 -->
+      <div class="process-card">
+        <div class="process-header">
+          <h3>02 销售与售后的标准化交接</h3>
+          <p>在订单流中强植入《结构化交接单》。销售确认成交时，必须录入账号开通数、行业等参数；提交后，数据及客户归属权自动穿透给售后部门生成“待配置任务”，实现跨部门信息 100% 同步流转。</p>
+        </div>
+        <div class="process-grid">
+          <img class="process-img-item" src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/image_675031.png" alt="核心业务流程二：成交与售后无缝交接">
+          <img class="process-img-item" src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/image_675013.png" alt="成交与售后无缝交接业务泳道图">
+        </div>
+        <img class="process-ui-long" src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/image_674ff5.png" alt="成交交接与售后流转关键界面设计">
+      </div>
+
+      <!-- 链路 3：AI 赋能的售后知识库 -->
+      <div class="process-card">
+        <div class="process-header">
+          <h3>03 AI 赋能的售后知识库</h3>
+          <p>结合智能辅助客服拦截基础问答，并将未知问题沉淀至未命中日志中。客服可一键补录操作流以训练 AI。同时，设计了售后数据监控面板，实时掌握响应时长与客户满意度预警。</p>
+        </div>
+        <div class="process-grid">
+          <img class="process-img-item" src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/image_674fd5.png" alt="核心业务流程三：售后咨询与智能服务">
+          <img class="process-img-item" src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/image_674fb7.png" alt="售后咨询与智能服务业务泳道图">
+        </div>
+        <img class="process-ui-long" src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/image_674f9a.png" alt="售后接待与服务闭环优化界面设计">
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 6. UI组件展示 -->
+  <section class="section section-light" id="ui-system">
+    <div class="container">
+      <div class="section-header left-align">
+        <h2>06. UI组件与规范体系</h2>
+        <p>为确保系统庞大复杂表单和高密度数据的阅读效率，我从零制定了包含色彩语义、排版栅格、图标库及各类数据录入组件的设计规范，极大提升了开发团队的复用性与界面的高度一致性。</p>
+      </div>
+      <div style="margin-top: 40px;">
+        <img class="img-auto" style="border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);" src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/06_ui_components.png" alt="UI组件库全景长图" onerror="this.src=''; this.alt='06_ui_components.png 未找到，请检查路径'; this.style.padding='100px'; this.style.textAlign='center';">
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 设计成果与影响 -->
+  <section class="section" id="outcomes">
+    <div class="container">
+      <div class="section-header">
+        <h2>07. 设计成果与商业影响</h2>
+        <p>作为一款从无到有构建的业务系统，B-Link 上线后成功取代了企业过去使用的碎片化工具组合，在效率端交出了亮眼的答卷。</p>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-item">
+          <strong>+30%</strong>
+          <span>全时段智能兜底接入<br>夜间线索留资率提升</span>
+        </div>
+        <div class="metric-item">
+          <strong>-60%</strong>
+          <span>结构化表单替代口头核实<br>交接沟通成本大幅下降</span>
+        </div>
+        <div class="metric-item">
+          <strong>-60%</strong>
+          <span>知识库成功拦截高频问答<br>售后基础咨询人力释放</span>
+        </div>
+      </div>
+      <div class="standard-img">
+        <div class="img-placeholder">
+          <img src="/Users/haobusu/Desktop/作品集网站/B端作品集网站/b2b/07_outcomes.png" alt="数据图表或最终系统展示" onerror="this.style.display='none'; this.parentNode.innerHTML='07_outcomes.png<br>展示驾驶舱界面或项目最终成果';">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 总结与反思 -->
+  <section class="section section-light" id="reflection">
+    <div class="container">
+      <div class="section-header">
+        <h2>08. 总结与反思</h2>
+        <p>从 0 到 1 构建复杂的 B 端系统是一场对业务深度理解与逻辑归纳能力的双重考验。设计不应仅仅停留在“页面是否美观”，更在于是否解决了角色间的信任与流转效率问题。系统虽然上线，但在异常状态处理与移动端轻量化适配上仍有打磨空间。在未来的迭代中，我将继续深入真实业务场景，沉淀更加成熟的组件规范库。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== 重构后的无边框联系方式 ======== -->
+  <footer id="contact" class="footer-section">
+    <div class="container">
+      <div class="contact-layout">
+        <div class="contact-left">
+          <!-- 预留的头像图片位置：请在此处填入您的真实头像路径 -->
+          <img src="/Users/haobusu/Desktop/作品集网站/photo.jpg" alt="我的头像" class="footer-avatar" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%23eaeaea\'/><text x=\'50\' y=\'50\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%23999\' text-anchor=\'middle\' dy=\'.3em\'>头像占位</text></svg>'">
+          
+          <div class="contact-info">
+            <h2>期待与您的团队创造更多价值。</h2>
+            <p>正在寻找新的机会，如果我的经历与您的团队契合，欢迎随时联系。</p>
+          </div>
+        </div>
+        
+        <div class="contact-right">
+          <span>联系我：</span>
+          <!-- 此处替换为您自己的手机号 -->
+          <a class="btn-outline">
+            手机：187-0515-3141
+          </a>
+          <!-- 此处替换您的简历下载或在线预览链接 -->
+          <a href="YOUR_RESUME_DOWNLOAD_LINK" class="btn-outline">
+            下载简历 ↗
+          </a>
+        </div>
+      </div>
+
+      <!--<div class="footer-copyright">
+        © 2026 设计与构建 - 融合代码与AI。
+      </div>-->
+    </div>
+  </footer>
+
+  <!-- 灯箱大图预览弹窗组件（支持长图纵向滚动浏览） -->
+  <div class="lightbox-modal" id="lightboxModal">
+    <span class="lightbox-close" id="lightboxClose">&times;</span>
+    <img id="lightboxImg" src="" alt="大图预览">
+  </div>
+
+  <!-- 一键回到顶部悬浮按钮 -->
+  <button class="back-to-top" id="backToTopBtn" aria-label="回到顶部" title="回到顶部">
+    <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+  </button>
+
+  <!-- 交互控制脚本（灯箱 & 回到顶部） -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. 灯箱大图交互逻辑
+      const modal = document.getElementById('lightboxModal');
+      const modalImg = document.getElementById('lightboxImg');
+      const closeBtn = document.getElementById('lightboxClose');
+      const zoomableImages = document.querySelectorAll('img.img-auto, .img-placeholder img, .process-img-item, .process-ui-long');
+
+      zoomableImages.forEach(img => {
+        img.addEventListener('click', () => {
+          if (img.naturalWidth === 0 || !img.src) return;
+          modal.classList.add('active');
+          modalImg.src = img.src;
+          modalImg.alt = img.alt || '大图预览';
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      const closeModal = () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+          modalImg.src = '';
+        }, 300);
+      };
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+          closeModal();
+        }
+      });
+
+      // 2. 回到顶部按钮浮现与滚动逻辑
+      const backToTopBtn = document.getElementById('backToTopBtn');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) {
+          backToTopBtn.classList.add('show');
+        } else {
+          backToTopBtn.classList.remove('show');
+        }
+      });
+
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

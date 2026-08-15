@@ -1,0 +1,1160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="鹿小轻｜轻养 Daily 品牌 IP 形象与产品场景应用设计作品集。">
+  <meta name="theme-color" content="#ffa45b">
+  <title>鹿小轻｜轻养 Daily 品牌 IP 设计</title>
+  <style>
+    :root {
+      --ink: #171411;
+      --muted: #706963;
+      --orange: #ffa45b;
+      --orange-deep: #f45116;
+      --peach: #ffe7d3;
+      --cream: #fff8f2;
+      --green: #328924;
+      --line: rgba(37, 26, 18, .13);
+      --max-width: 1120px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      color: var(--ink);
+      background: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body.modal-open { overflow: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button { color: inherit; font: inherit; }
+
+    :focus-visible {
+      outline: 3px solid rgba(244, 81, 22, .3);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .nav-wrapper {
+      position: fixed;
+      top: 24px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .floating-nav {
+      background-color: #111111;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 0.5rem 0.5rem 2rem;
+      gap: 3rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-logo {
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-logo span { color: #bbf706; }
+
+    .nav-links { display: flex; gap: 2rem; }
+
+    .nav-links a {
+      color: #9ca3af;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #ffffff; }
+
+    .nav-cta {
+      background-color: #ffffff;
+      color: #111111;
+      padding: 0.6rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: transform 0.2s;
+    }
+
+    .nav-cta:hover { transform: scale(1.02); }
+
+    .hero {
+      position: relative;
+      min-height: 850px;
+      padding: 145px 0 60px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #ff9c50 0%, #ffb36f 58%, #ffe7d3 100%);
+    }
+
+    .hero::before {
+      content: "DEER CHING";
+      position: absolute;
+      left: -1vw;
+      bottom: -4.5vw;
+      color: rgba(255, 255, 255, .2);
+      font-size: clamp(100px, 15vw, 240px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -.08em;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .leaf {
+      position: absolute;
+      z-index: 1;
+      width: 92px;
+      height: 42px;
+      border-radius: 100% 0 100% 0;
+      background: linear-gradient(135deg, #baff00, var(--green));
+      opacity: .9;
+    }
+
+    .leaf-one { top: 120px; right: 8%; transform: rotate(26deg); }
+    .leaf-two { top: 185px; right: 3%; width: 58px; height: 28px; transform: rotate(62deg); }
+
+    .hero-grid {
+      position: relative;
+      z-index: 2;
+      min-height: 640px;
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(430px, 1.1fr);
+      gap: 46px;
+      align-items: center;
+    }
+
+    .eyebrow,
+    .section-number {
+      display: block;
+      font-size: 12px;
+      font-weight: 730;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow { margin-bottom: 24px; color: rgba(30, 18, 10, .68); }
+
+    h1 {
+      max-width: 650px;
+      margin-bottom: 28px;
+      font-size: clamp(64px, 7.2vw, 104px);
+      font-weight: 700;
+      line-height: .98;
+      letter-spacing: -.075em;
+    }
+
+    h1 span {
+      display: block;
+      margin-top: 22px;
+      color: #fff;
+      font-size: .38em;
+      font-weight: 560;
+      line-height: 1.25;
+      letter-spacing: -.035em;
+    }
+
+    .hero-copy {
+      max-width: 540px;
+      color: rgba(31, 20, 12, .7);
+      font-size: 17px;
+    }
+
+    .hero-art {
+      position: relative;
+      height: 650px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .hero-art::after {
+      content: "";
+      position: absolute;
+      right: 4%;
+      bottom: 3%;
+      left: 4%;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(98, 47, 13, .18);
+      filter: blur(16px);
+    }
+
+    .hero-art img {
+      position: relative;
+      z-index: 1;
+      width: auto;
+      height: 98%;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 26px 24px rgba(104, 48, 12, .17));
+    }
+
+    .scroll-mark {
+      position: absolute;
+      left: 50%;
+      bottom: 22px;
+      z-index: 3;
+      color: rgba(38, 24, 14, .55);
+      font-size: 11px;
+      letter-spacing: .16em;
+      transform: translateX(-50%);
+    }
+
+    .section {
+      position: relative;
+      padding: 118px 0;
+      scroll-margin-top: 88px;
+    }
+
+    .character-section {
+      padding-top: 150px;
+      background: linear-gradient(180deg, #ffe7d3 0%, #fff 24%, #fff 100%);
+    }
+
+    .system-section {
+      background: linear-gradient(180deg, #fff 0%, #fff 70%, #fff6ee 100%);
+    }
+
+    .action-section {
+      padding-top: 140px;
+      padding-bottom: 140px;
+      background: linear-gradient(180deg, #fff6ee 0%, #ffd6b4 48%, #fff4ea 100%);
+    }
+
+    .application-section {
+      padding-top: 145px;
+      background: linear-gradient(180deg, #fff4ea 0%, #fff 17%, #fff 100%);
+    }
+
+    .section-header {
+      max-width: 760px;
+      margin: 0 auto 60px;
+      text-align: center;
+    }
+
+    .section-number { margin-bottom: 14px; color: var(--orange-deep); }
+
+    .section-header h2 {
+      margin-bottom: 17px;
+      font-size: clamp(34px, 4.6vw, 54px);
+      font-weight: 650;
+      line-height: 1.2;
+      letter-spacing: -.052em;
+    }
+
+    .section-header p { color: var(--muted); font-size: 16px; }
+
+    .profile-layout {
+      display: grid;
+      grid-template-columns: minmax(400px, .9fr) minmax(0, 1.1fr);
+      gap: 84px;
+      align-items: center;
+    }
+
+    .profile-art {
+      position: relative;
+      height: 630px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .profile-art::before {
+      content: "Q";
+      position: absolute;
+      top: 1%;
+      left: -3%;
+      color: #fff1e6;
+      font-size: 380px;
+      font-weight: 800;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .profile-art img {
+      position: relative;
+      z-index: 1;
+      width: auto;
+      height: 96%;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 22px 20px rgba(80, 51, 30, .1));
+    }
+
+    .profile-copy small {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--orange-deep);
+      font-size: 13px;
+      font-weight: 650;
+      letter-spacing: .08em;
+    }
+
+    .profile-copy h2 {
+      margin-bottom: 22px;
+      font-size: clamp(48px, 6vw, 72px);
+      font-weight: 650;
+      line-height: 1;
+      letter-spacing: -.06em;
+    }
+
+    .profile-lead {
+      max-width: 560px;
+      margin-bottom: 34px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .profile-list {
+      display: grid;
+      gap: 13px;
+      padding: 27px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .profile-list div {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 18px;
+      font-size: 15px;
+    }
+
+    .profile-list dt { color: #999; }
+    .profile-list dd { color: #2f2a26; }
+
+    .slogan {
+      margin-top: 28px;
+      color: var(--orange-deep);
+      font-size: 25px;
+      font-weight: 580;
+      letter-spacing: -.02em;
+    }
+
+    .feature-line {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 36px;
+      margin-top: 82px;
+    }
+
+    .feature-line article { padding-top: 20px; border-top: 2px solid var(--ink); }
+    .feature-line article:nth-child(2) { border-color: var(--orange-deep); }
+    .feature-line article:nth-child(3) { border-color: var(--green); }
+    .feature-line article:nth-child(4) { border-color: #8c5a32; }
+    .feature-line b { display: block; margin-bottom: 8px; font-size: 16px; }
+    .feature-line p { color: var(--muted); font-size: 13px; }
+
+    .view-switch {
+      display: flex;
+      justify-content: center;
+      gap: 34px;
+      margin-bottom: 44px;
+    }
+
+    .view-switch button {
+      position: relative;
+      padding: 4px 0 10px;
+      border: 0;
+      color: #9a938e;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .view-switch button::after {
+      content: "";
+      position: absolute;
+      right: 100%;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: var(--orange-deep);
+      transition: right .2s ease;
+    }
+
+    .view-switch button.active { color: var(--ink); font-weight: 650; }
+    .view-switch button.active::after { right: 0; }
+
+    .view-panel {
+      display: none;
+      min-height: 560px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .view-panel.active { display: flex; }
+
+    .lineart-panel img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 40px;
+    }
+
+    .turnaround {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+      align-items: end;
+    }
+
+    .turnaround figure {
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .turnaround img {
+      max-width: 100%;
+      max-height: 470px;
+      display: block;
+      object-fit: contain;
+      cursor: zoom-in;
+      filter: drop-shadow(0 16px 16px rgba(74, 48, 29, .08));
+    }
+
+    .turnaround figcaption {
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 24px;
+      margin-top: 68px;
+      padding-top: 38px;
+      border-top: 1px solid var(--line);
+    }
+
+    .swatch-color {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 12px;
+      border: 1px solid rgba(0, 0, 0, .06);
+      border-radius: 50%;
+    }
+
+    .swatch strong,
+    .swatch span { display: block; text-align: center; }
+    .swatch strong { font-size: 13px; }
+    .swatch span { color: #999; font-size: 11px; }
+
+    .actions-track {
+      display: flex;
+      gap: 44px;
+      padding: 12px 2px 22px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .actions-track::-webkit-scrollbar { display: none; }
+
+    .action-item {
+      flex: 0 0 245px;
+      scroll-snap-align: start;
+      text-align: center;
+    }
+
+    .action-item img {
+      width: 100%;
+      height: 330px;
+      display: block;
+      object-fit: contain;
+      cursor: zoom-in;
+      filter: drop-shadow(0 18px 16px rgba(84, 45, 17, .12));
+    }
+
+    .action-item span {
+      display: inline-block;
+      margin-top: 14px;
+      padding-top: 7px;
+      border-top: 1px solid rgba(39, 26, 18, .25);
+      font-size: 14px;
+      font-weight: 580;
+    }
+
+    .carousel-controls {
+      display: flex;
+      justify-content: flex-end;
+      gap: 22px;
+      margin-top: 28px;
+    }
+
+    .carousel-controls button {
+      padding: 5px 0;
+      border: 0;
+      border-bottom: 1px solid var(--ink);
+      background: transparent;
+      cursor: pointer;
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+    .application-block + .application-block { margin-top: 125px; }
+
+    .application-heading {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 48px;
+      margin-bottom: 48px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+      align-items: start;
+    }
+
+    .application-heading h3 {
+      font-size: 30px;
+      font-weight: 630;
+      letter-spacing: -.04em;
+    }
+
+    .application-heading p { color: var(--muted); font-size: 15px; }
+
+    .phone-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .phone-figure { text-align: center; }
+
+    .phone-screen {
+      min-height: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 15px 18px;
+      border: 2px solid #171411;
+      border-radius: 34px;
+      background: #fff;
+    }
+
+    .phone-bar {
+      width: 66px;
+      height: 5px;
+      margin-bottom: 22px;
+      border-radius: 99px;
+      background: #171411;
+    }
+
+    .phone-screen h4 {
+      min-height: 42px;
+      color: #555;
+      font-size: 13px;
+      font-weight: 560;
+      line-height: 1.5;
+    }
+
+    .phone-screen img {
+      width: 100%;
+      height: 240px;
+      display: block;
+      margin: 18px 0;
+      object-fit: contain;
+      cursor: zoom-in;
+    }
+
+    .phone-screen p {
+      margin-top: auto;
+      color: #999;
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .phone-figure figcaption {
+      margin-top: 14px;
+      color: #8d8782;
+      font-size: 12px;
+    }
+
+    .summary-section {
+      padding: 125px 0;
+      background: linear-gradient(135deg, #ff9d52 0%, #ffbc84 100%);
+    }
+
+    .summary-header {
+      max-width: 790px;
+      margin-bottom: 70px;
+    }
+
+    .summary-header .section-number { color: rgba(48, 27, 13, .58); }
+
+    .summary-header h2 {
+      margin: 12px 0 18px;
+      font-size: clamp(44px, 6vw, 72px);
+      font-weight: 680;
+      line-height: 1.08;
+      letter-spacing: -.062em;
+    }
+
+    .summary-header p { max-width: 660px; color: rgba(45, 28, 16, .68); }
+
+    .summary-line {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid rgba(40, 23, 12, .32);
+    }
+
+    .summary-line div {
+      padding: 28px 24px 0 0;
+      border-right: 1px solid rgba(40, 23, 12, .22);
+    }
+
+    .summary-line div + div { padding-left: 24px; }
+    .summary-line div:last-child { border-right: 0; }
+    .summary-line b { display: block; margin-bottom: 7px; font-size: 16px; }
+    .summary-line span { color: rgba(45, 28, 16, .65); font-size: 13px; }
+
+    .footer {
+      padding: 50px 0;
+      background: #171411;
+      color: #fff;
+    }
+
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      color: rgba(255, 255, 255, .58);
+      font-size: 13px;
+    }
+
+    .footer strong { color: #fff; font-size: 15px; }
+
+    .footer a {
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255, 255, 255, .45);
+      color: #fff;
+    }
+
+    .footer-section {
+      padding: 80px 0 60px;
+      color: #1a1a1a;
+      background: #fcfcfc;
+    }
+    .footer-section .container { width: min(1080px, calc(100% - 48px)); }
+    .contact-layout {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 80px;
+      padding: 20px 0;
+    }
+    .contact-left { display: flex; align-items: center; gap: 36px; }
+    .footer-avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #eaeaea;
+      flex-shrink: 0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    }
+    .contact-info h2 {
+      margin-bottom: 12px;
+      color: #1a1a1a;
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+    .contact-info p {
+      max-width: 500px;
+      color: #666666;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .contact-right {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 180px;
+    }
+    .contact-right span {
+      margin-bottom: 8px;
+      color: #1a1a1a;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      border: 1px solid #111111;
+      border-radius: 50px;
+      color: #111111;
+      background: transparent;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { color: #ffffff; background: #111111; }
+
+    @media (max-width: 900px) {
+      .contact-layout { flex-direction: column; align-items: flex-start; gap: 32px; }
+      .contact-left { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .contact-right { width: 100%; margin-top: 16px; }
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      width: 56px;
+      height: 56px;
+      background: #111111;
+      color: #ffffff;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      background: #333333;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .back-to-top svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      padding: 68px 24px 30px;
+      background: rgba(0, 0, 0, .9);
+    }
+
+    .lightbox.open { display: flex; align-items: center; justify-content: center; }
+
+    .lightbox img {
+      max-width: min(1200px, 100%);
+      max-height: calc(100vh - 100px);
+      display: block;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 18px;
+      right: 24px;
+      z-index: 1;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255, 255, 255, .3);
+      border-radius: 50%;
+      color: #fff;
+      background: rgba(255, 255, 255, .12);
+      cursor: pointer;
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    @media (max-width: 920px) {
+      .nav-links { display: none; }
+      .hero-grid, .profile-layout { grid-template-columns: 1fr; gap: 48px; }
+      .hero { min-height: auto; }
+      .hero-art { width: min(570px, 100%); margin: 0 auto; }
+      .profile-art { width: min(520px, 100%); margin: 0 auto; }
+      .feature-line, .summary-line { grid-template-columns: repeat(2, 1fr); }
+      .summary-line div:nth-child(2) { border-right: 0; }
+      .phone-row { grid-template-columns: repeat(2, 1fr); gap: 48px; }
+      .palette { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 620px) {
+      .container { width: calc(100% - 28px); }
+      .nav-wrapper { top: 14px; }
+      .nav { width: calc(100% - 24px); justify-content: space-between; }
+      .hero { padding: 118px 0 72px; }
+      .hero::before { bottom: 0; font-size: 108px; }
+      h1 { font-size: 66px; }
+      h1 span { font-size: .45em; }
+      .hero-copy { font-size: 15px; }
+      .hero-art { height: 520px; }
+      .leaf { display: none; }
+      .section { padding: 78px 0; }
+      .character-section, .action-section, .application-section { padding-top: 100px; }
+      .section-header { margin-bottom: 38px; }
+      .section-header h2 { font-size: 34px; }
+      .profile-art { height: 510px; }
+      .profile-copy h2 { font-size: 50px; }
+      .feature-line { grid-template-columns: 1fr; gap: 30px; }
+      .view-panel { min-height: 420px; }
+      .lineart-panel img { border-radius: 20px; }
+      .turnaround { gap: 5px; }
+      .turnaround figure { min-height: 390px; }
+      .turnaround img { max-height: 340px; }
+      .palette { grid-template-columns: repeat(2, 1fr); }
+      .application-heading { grid-template-columns: 1fr; gap: 8px; }
+      .phone-row { grid-template-columns: 1fr; }
+      .phone-figure { width: min(320px, 100%); margin: 0 auto; }
+      .summary-section { padding: 90px 0; }
+      .summary-line { grid-template-columns: 1fr; }
+      .summary-line div,
+      .summary-line div + div { padding: 22px 0; border-right: 0; border-bottom: 1px solid rgba(40, 23, 12, .2); }
+      .summary-line div:last-child { border-bottom: 0; }
+      .footer-content { flex-direction: column; align-items: flex-start; }
+      .back-to-top { bottom: 24px; right: 24px; width: 48px; height: 48px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-wrapper">
+    <nav class="floating-nav" aria-label="网站导航">
+      <a class="nav-logo" href="../index.html">portfolio<span>.</span></a>
+      <div class="nav-links">
+        <a href="../index.html#work">精选作品</a>
+        <a href="../index.html#about">关于我</a>
+      </div>
+      <a class="nav-cta" href="../index.html#contact">联系我</a>
+    </nav>
+  </div>
+
+  <main>
+    <header class="hero" id="top">
+      <i class="leaf leaf-one" aria-hidden="true"></i>
+      <i class="leaf leaf-two" aria-hidden="true"></i>
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">轻养 Daily · Brand IP Design</span>
+          <h1>鹿小轻<span>从角色形象到健康场景</span></h1>
+          <p class="hero-copy">围绕轻养 Daily 的健康管理体验，完成角色定位、形象规范、动作情绪与产品场景应用设计。</p>
+        </div>
+        <div class="hero-art">
+          <img src="luxiaoqing-assets/hero.png" alt="穿橙色运动服的鹿小轻三维形象">
+        </div>
+      </div>
+      <span class="scroll-mark">SCROLL ↓</span>
+    </header>
+
+    <section class="section character-section" id="character">
+      <div class="container">
+        <div class="profile-layout">
+          <div class="profile-art">
+            <img class="zoomable" src="luxiaoqing-assets/profile.png" alt="鹿小轻标准三维形象">
+          </div>
+          <div class="profile-copy">
+            <small>DEER CHING</small>
+            <h2>鹿小轻</h2>
+            <p class="profile-lead">以柔和的身体比例、自然生长的叶片鹿角和鲜明的橙色项圈，建立亲和、健康且具有活力的角色识别。</p>
+            <dl class="profile-list">
+              <div><dt>年龄</dt><dd>7 岁</dd></div>
+              <div><dt>星座</dt><dd>天秤座</dd></div>
+              <div><dt>爱好</dt><dd>突破自我的攀岩、修心养性的瑜伽</dd></div>
+              <div><dt>性格</dt><dd>优雅平衡、温和坚韧，是个好奇宝宝</dd></div>
+            </dl>
+            <p class="slogan">“快乐养生，轻松减脂”</p>
+          </div>
+        </div>
+
+        <div class="feature-line">
+          <article><b>叶片鹿角</b><p>自然生长的视觉符号，传递健康与生命力。</p></article>
+          <article><b>柔和比例</b><p>圆润轮廓与大眼睛降低健康产品的距离感。</p></article>
+          <article><b>橙色项圈</b><p>强化角色识别，呼应轻养 Daily 的活力气质。</p></article>
+          <article><b>Q 字吊坠</b><p>让角色与“轻养”品牌建立直接联系。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section system-section" id="system">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-number">02 / Visual System</span>
+          <h2>从线稿到三维形象的统一规范</h2>
+          <p>通过正面、侧面与背面视图，统一角色比例、花纹位置、鹿角结构与品牌配件。</p>
+        </div>
+
+        <div class="view-switch" role="tablist" aria-label="形象阶段切换">
+          <button class="active" type="button" role="tab" aria-selected="true" data-panel="lineart">线稿</button>
+          <button type="button" role="tab" aria-selected="false" data-panel="flat">二维</button>
+          <button type="button" role="tab" aria-selected="false" data-panel="three">三维</button>
+        </div>
+
+        <div class="view-panel lineart-panel active" data-view="lineart">
+          <img class="zoomable" src="luxiaoqing-assets/lineart-three-view.webp" alt="鹿小轻黑白线稿三视图">
+        </div>
+
+        <div class="view-panel" data-view="flat">
+          <div class="turnaround">
+            <figure><img class="zoomable" src="luxiaoqing-assets/flat-front.png" alt="鹿小轻二维正面形象"><figcaption>Front</figcaption></figure>
+            <figure><img class="zoomable" src="luxiaoqing-assets/flat-side.png" alt="鹿小轻二维侧面形象"><figcaption>Side</figcaption></figure>
+            <figure><img class="zoomable" src="luxiaoqing-assets/flat-back.png" alt="鹿小轻二维背面形象"><figcaption>Back</figcaption></figure>
+          </div>
+        </div>
+
+        <div class="view-panel" data-view="three">
+          <div class="turnaround">
+            <figure><img class="zoomable" src="luxiaoqing-assets/three-front.png" alt="鹿小轻三维正面形象"><figcaption>Front</figcaption></figure>
+            <figure><img class="zoomable" src="luxiaoqing-assets/three-side.png" alt="鹿小轻三维侧面形象"><figcaption>Side</figcaption></figure>
+            <figure><img class="zoomable" src="luxiaoqing-assets/three-back.png" alt="鹿小轻三维背面形象"><figcaption>Back</figcaption></figure>
+          </div>
+        </div>
+
+        <div class="palette" aria-label="鹿小轻角色配色">
+          <div class="swatch"><div class="swatch-color" style="background:#F6F3EC"></div><strong>主体肤色</strong><span>#F6F3EC</span></div>
+          <div class="swatch"><div class="swatch-color" style="background:#F74C00"></div><strong>项圈橙</strong><span>#F74C00</span></div>
+          <div class="swatch"><div class="swatch-color" style="background:#250101"></div><strong>眼睛深棕</strong><span>#250101</span></div>
+          <div class="swatch"><div class="swatch-color" style="background:#854B27"></div><strong>鹿角棕</strong><span>#854B27</span></div>
+          <div class="swatch"><div class="swatch-color" style="background:#328924"></div><strong>叶片绿</strong><span>#328924</span></div>
+          <div class="swatch"><div class="swatch-color" style="background:#F5DBCA"></div><strong>腮红粉</strong><span>#F5DBCA</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section action-section" id="actions">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-number">03 / Actions & Emotion</span>
+          <h2>让角色覆盖真实的健康生活状态</h2>
+          <p>从运动和饮食，到达成目标与暂时疲惫，让鹿小轻持续参与产品和运营沟通。</p>
+        </div>
+
+        <div class="actions-track" aria-label="鹿小轻动作形象画廊">
+          <div class="action-item"><img class="zoomable" src="luxiaoqing-assets/pose-dumbbell.png" alt="鹿小轻举哑铃动作"><span>力量训练</span></div>
+          <div class="action-item"><img class="zoomable" src="luxiaoqing-assets/pose-yoga.png" alt="鹿小轻瑜伽动作"><span>平衡瑜伽</span></div>
+          <div class="action-item"><img class="zoomable" src="luxiaoqing-assets/pose-food.png" alt="鹿小轻健康饮食动作"><span>健康饮食</span></div>
+          <div class="action-item"><img class="zoomable" src="luxiaoqing-assets/emotion-goal.png" alt="鹿小轻目标达成动作"><span>目标达成</span></div>
+          <div class="action-item"><img class="zoomable" src="luxiaoqing-assets/emotion-energy.png" alt="鹿小轻元气满满动作"><span>元气满满</span></div>
+          <div class="action-item"><img class="zoomable" src="luxiaoqing-assets/emotion-tired.png" alt="鹿小轻练不动了动作"><span>练不动啦</span></div>
+          <div class="action-item"><img class="zoomable" src="luxiaoqing-assets/action-cheer.png" alt="鹿小轻加油动作"><span>加油鼓励</span></div>
+          <div class="action-item"><img class="zoomable" src="luxiaoqing-assets/action-weight.png" alt="鹿小轻举重动作"><span>坚持训练</span></div>
+        </div>
+        <div class="carousel-controls" aria-label="动作画廊控制">
+          <button type="button" data-scroll="prev">← PREV</button>
+          <button type="button" data-scroll="next">NEXT →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section application-section" id="application">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-number">04 / Product Application</span>
+          <h2>让 IP 进入真实的产品反馈与引导</h2>
+          <p>角色不仅承担品牌装饰，也参与异常反馈、状态解释、功能认知与健康激励。</p>
+        </div>
+
+        <div class="application-block">
+          <div class="application-heading">
+            <h3>情感化空状态</h3>
+            <p>针对加载失败、暂无内容、暂无任务与网络异常设计不同情绪反馈，降低错误场景的负面感受。</p>
+          </div>
+          <div class="phone-row">
+            <figure class="phone-figure"><div class="phone-screen"><div class="phone-bar"></div><h4>页面加载失败</h4><img class="zoomable" src="luxiaoqing-assets/empty-error.png" alt="页面加载失败空状态插画"><p>过会再试试吧</p></div><figcaption>加载异常</figcaption></figure>
+            <figure class="phone-figure"><div class="phone-screen"><div class="phone-bar"></div><h4>这里什么都没有</h4><img class="zoomable" src="luxiaoqing-assets/empty-content.png" alt="暂无内容空状态插画"><p>用哭泣情绪缓和空内容反馈</p></div><figcaption>暂无内容</figcaption></figure>
+            <figure class="phone-figure"><div class="phone-screen"><div class="phone-bar"></div><h4>暂无任务计划</h4><img class="zoomable" src="luxiaoqing-assets/empty-plan.png" alt="暂无任务计划空状态插画"><p>引导用户回到计划创建路径</p></div><figcaption>暂无计划</figcaption></figure>
+            <figure class="phone-figure"><div class="phone-screen"><div class="phone-bar"></div><h4>你的网络开小差啦</h4><img class="zoomable" src="luxiaoqing-assets/empty-network.png" alt="网络异常空状态插画"><p>将技术异常转化为友好提醒</p></div><figcaption>网络异常</figcaption></figure>
+          </div>
+        </div>
+
+        <div class="application-block">
+          <div class="application-heading">
+            <h3>产品引导页</h3>
+            <p>通过角色动作对应核心功能，帮助用户理解健康画像、方案生成、营养指导与数据追踪。</p>
+          </div>
+          <div class="phone-row">
+            <figure class="phone-figure"><div class="phone-screen"><div class="phone-bar"></div><h4>你的健康，由你定义</h4><img class="zoomable" src="luxiaoqing-assets/onboard-profile.png" alt="健康画像产品引导插画"><p>体质指标一键测，生成专属健康画像</p></div><figcaption>健康画像</figcaption></figure>
+            <figure class="phone-figure"><div class="phone-screen"><div class="phone-bar"></div><h4>智能饮食健身方案</h4><img class="zoomable" src="luxiaoqing-assets/onboard-plan.png" alt="饮食健身方案产品引导插画"><p>智能生成更易执行的科学方案</p></div><figcaption>方案生成</figcaption></figure>
+            <figure class="phone-figure"><div class="phone-screen"><div class="phone-bar"></div><h4>保健品营养指导</h4><img class="zoomable" src="luxiaoqing-assets/onboard-supplement.png" alt="保健品营养指导产品引导插画"><p>科学搭配，提供专业指导</p></div><figcaption>营养指导</figcaption></figure>
+            <figure class="phone-figure"><div class="phone-screen"><div class="phone-bar"></div><h4>动态追踪激励</h4><img class="zoomable" src="luxiaoqing-assets/onboard-track.png" alt="动态追踪激励产品引导插画"><p>每日数据追踪，健康进度实时查看</p></div><figcaption>追踪激励</figcaption></figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="summary-section" id="summary">
+      <div class="container">
+        <div class="summary-header">
+          <span class="section-number">05 / Summary</span>
+          <h2>形成可持续扩展的品牌 IP 资产</h2>
+          <p>从角色设定到产品应用，建立统一的视觉语言，为后续健康内容、活动运营与用户激励提供素材基础。</p>
+        </div>
+        <div class="summary-line">
+          <div><b>角色定位</b><span>姓名、性格、爱好与品牌口号</span></div>
+          <div><b>形象规范</b><span>二维、三维、三视图与配色系统</span></div>
+          <div><b>动作系统</b><span>运动、饮食、激励与日常情绪</span></div>
+          <div><b>产品应用</b><span>空状态反馈与首次使用引导</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact" class="footer-section">
+    <div class="container">
+      <div class="contact-layout">
+        <div class="contact-left">
+          <img src="/Users/haobusu/Desktop/作品集网站/photo.jpg" alt="我的头像" class="footer-avatar" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%23eaeaea\'/><text x=\'50\' y=\'50\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%23999\' text-anchor=\'middle\' dy=\'.3em\'>头像占位</text></svg>'">
+          <div class="contact-info">
+            <h2>期待与您的团队创造更多价值。</h2>
+            <p>正在寻找新的机会，如果我的经历与您的团队契合，欢迎随时联系。</p>
+          </div>
+        </div>
+        <div class="contact-right">
+          <span>联系我：</span>
+          <a class="btn-outline">手机：187-0515-3141</a>
+          <a href="YOUR_RESUME_DOWNLOAD_LINK" class="btn-outline">下载简历 ↗</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTopBtn" aria-label="回到顶部" title="回到顶部">
+    <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+  </button>
+
+  <div class="lightbox" role="dialog" aria-modal="true" aria-label="作品大图预览" aria-hidden="true">
+    <button class="lightbox-close" type="button" aria-label="关闭大图预览">×</button>
+    <img src="" alt="作品大图预览">
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const switchButtons = document.querySelectorAll(".view-switch button");
+      const viewPanels = document.querySelectorAll(".view-panel");
+      const track = document.querySelector(".actions-track");
+      const backToTopBtn = document.getElementById("backToTopBtn");
+      const lightbox = document.querySelector(".lightbox");
+      const lightboxImage = lightbox.querySelector("img");
+      const closeButton = lightbox.querySelector(".lightbox-close");
+      let lastTrigger = null;
+
+      switchButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          const target = button.dataset.panel;
+          switchButtons.forEach(item => {
+            const selected = item === button;
+            item.classList.toggle("active", selected);
+            item.setAttribute("aria-selected", String(selected));
+          });
+          viewPanels.forEach(panel => panel.classList.toggle("active", panel.dataset.view === target));
+        });
+      });
+
+      document.querySelectorAll("[data-scroll]").forEach(button => {
+        button.addEventListener("click", () => {
+          const direction = button.dataset.scroll === "next" ? 1 : -1;
+          track.scrollBy({ left: direction * 578, behavior: reduceMotion ? "auto" : "smooth" });
+        });
+      });
+
+      const closeLightbox = () => {
+        lightbox.classList.remove("open");
+        lightbox.setAttribute("aria-hidden", "true");
+        lightboxImage.src = "";
+        lightboxImage.alt = "作品大图预览";
+        document.body.classList.remove("modal-open");
+        if (lastTrigger) lastTrigger.focus();
+      };
+
+      document.querySelectorAll(".zoomable").forEach(image => {
+        image.tabIndex = 0;
+        image.setAttribute("role", "button");
+        image.setAttribute("aria-label", `放大查看：${image.alt}`);
+        const openLightbox = () => {
+          lastTrigger = image;
+          lightboxImage.src = image.src;
+          lightboxImage.alt = image.alt;
+          lightbox.classList.add("open");
+          lightbox.setAttribute("aria-hidden", "false");
+          document.body.classList.add("modal-open");
+          closeButton.focus();
+        };
+        image.addEventListener("click", openLightbox);
+        image.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openLightbox();
+          }
+        });
+      });
+
+      closeButton.addEventListener("click", closeLightbox);
+      lightbox.addEventListener("click", event => {
+        if (event.target === lightbox) closeLightbox();
+      });
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && lightbox.classList.contains("open")) closeLightbox();
+      });
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 400) {
+          backToTopBtn.classList.add("show");
+        } else {
+          backToTopBtn.classList.remove("show");
+        }
+      });
+
+      backToTopBtn.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      });
+    });
+  </script>
+</body>
+</html>
