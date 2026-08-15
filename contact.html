@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UX 交互设计师张洁的联系方式与个人简历。">
+    <title>联系我 | UX 交互设计师张洁</title>
+    <style>
+        :root {
+            --bg-color: #f5f5f1;
+            --card-bg: #ffffff;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --nav-bg: #111111;
+            --primary-cta: #bbf706;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100svh;
+            background:
+                radial-gradient(circle at 8% 12%, rgba(187, 247, 6, 0.34), transparent 31%),
+                radial-gradient(circle at 47% 24%, rgba(255, 244, 164, 0.52), transparent 31%),
+                radial-gradient(circle at 82% 52%, rgba(181, 229, 255, 0.46), transparent 35%),
+                radial-gradient(circle at 86% 94%, rgba(227, 255, 139, 0.42), transparent 34%),
+                #f6f8ed;
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+            mix-blend-mode: multiply;
+            z-index: -1;
+        }
+
+        /* 与首页一致的悬浮导航栏 */
+        .nav-wrapper {
+            position: fixed;
+            top: 24px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+            padding: 0 16px;
+        }
+
+        .floating-nav {
+            background-color: var(--nav-bg);
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.5rem 0.5rem 2rem;
+            gap: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-logo {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+        }
+
+        .nav-logo span {
+            color: var(--primary-cta);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: #ffffff;
+        }
+
+        .nav-cta {
+            background-color: #ffffff;
+            color: #111111;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: transform 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-cta:hover,
+        .nav-cta:focus-visible {
+            transform: scale(1.02);
+        }
+
+        .contact-shell {
+            width: min(1120px, calc(100% - 48px));
+            min-height: 100svh;
+            margin: 0 auto;
+            padding: 132px 0 72px;
+            display: grid;
+            grid-template-columns: minmax(360px, 0.92fr) minmax(440px, 1.08fr);
+            align-items: center;
+            gap: clamp(54px, 7vw, 104px);
+        }
+
+        /* 单张照片预留区域 */
+        .photo-wrap {
+            width: min(100%, 350px);
+            aspect-ratio: 4 / 5;
+            justify-self: center;
+            animation: fadeInUp 0.8s ease-out both;
+        }
+
+        .photo-placeholder,
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            border-radius: 38px;
+            box-shadow: 0 28px 70px rgba(40, 59, 42, 0.16);
+        }
+
+        .photo-placeholder {
+            position: relative;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1.5px dashed rgba(49, 91, 67, 0.3);
+            background:
+                radial-gradient(circle at 24% 18%, rgba(187, 247, 6, 0.22), transparent 34%),
+                linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(226, 239, 232, 0.7));
+            color: #315b43;
+        }
+
+        .photo-placeholder::before {
+            content: "";
+            position: absolute;
+            inset: 18px;
+            border: 1px solid rgba(49, 91, 67, 0.09);
+            border-radius: 27px;
+            pointer-events: none;
+        }
+
+        .photo-placeholder svg {
+            width: 54px;
+            height: 54px;
+            margin-bottom: 17px;
+            opacity: 0.76;
+        }
+
+        .photo-placeholder strong,
+        .photo-placeholder span {
+            position: relative;
+            z-index: 1;
+            display: block;
+            text-align: center;
+        }
+
+        .photo-placeholder strong {
+            font-size: 1rem;
+            letter-spacing: 0.03em;
+        }
+
+        .photo-placeholder span {
+            margin-top: 5px;
+            color: #75827b;
+            font-size: 0.78rem;
+        }
+
+        .profile-photo {
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .contact-copy {
+            animation: fadeInUp 0.8s 0.12s ease-out both;
+        }
+
+        .eyebrow {
+            color: #315b43;
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            max-width: 620px;
+            font-size: clamp(2.4rem, 4.2vw, 4.15rem);
+            line-height: 1.08;
+            letter-spacing: -0.055em;
+            font-weight: 800;
+            margin-bottom: 24px;
+        }
+
+        .intro {
+            max-width: 620px;
+            color: #3f4a45;
+            font-size: clamp(1rem, 1.3vw, 1.08rem);
+            line-height: 1.85;
+        }
+
+        .contact-options {
+            display: flex;
+            align-items: stretch;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .wechat-card {
+            min-width: 268px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 13px 9px 9px;
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            border-radius: 17px;
+            background: rgba(255, 255, 255, 0.72);
+            box-shadow: 0 10px 28px rgba(30, 47, 36, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .wechat-qr {
+            width: 88px;
+            height: 88px;
+            flex: 0 0 auto;
+            display: block;
+            object-fit: cover;
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            border-radius: 11px;
+            background: #fff;
+        }
+
+        .wechat-card strong,
+        .wechat-card span {
+            display: block;
+        }
+
+        .wechat-card strong {
+            color: #171d19;
+            font-size: 0.98rem;
+        }
+
+        .wechat-card span {
+            margin-top: 4px;
+            color: #66736c;
+            font-size: 0.76rem;
+            line-height: 1.45;
+        }
+
+        .actions {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contact-btn {
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 21px;
+            border: 1px solid transparent;
+            border-radius: 14px;
+            background: #30333a;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(30, 35, 31, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .contact-btn:hover,
+        .contact-btn:focus-visible {
+            transform: translateY(-2px);
+            box-shadow: 0 13px 26px rgba(30, 35, 31, 0.18);
+        }
+
+        .contact-btn svg {
+            flex: 0 0 auto;
+        }
+
+        .closing {
+            margin-top: 34px;
+            color: #161d19;
+            font-size: clamp(1rem, 1.4vw, 1.12rem);
+            font-weight: 750;
+        }
+
+        .contact-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 22px;
+            margin-top: 16px;
+            color: #526159;
+            font-size: 0.88rem;
+        }
+
+        .contact-meta a {
+            color: inherit;
+            text-decoration-color: rgba(82, 97, 89, 0.35);
+            text-underline-offset: 3px;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            z-index: 1100;
+            padding: 11px 17px;
+            border-radius: 99px;
+            background: rgba(17, 17, 17, 0.92);
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, 14px);
+            transition: opacity 0.24s ease, transform 0.24s ease;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            .contact-shell {
+                width: min(680px, calc(100% - 40px));
+                padding-top: 128px;
+                grid-template-columns: 1fr;
+                gap: 68px;
+            }
+
+            .photo-wrap {
+                width: min(100%, 360px);
+            }
+
+            .contact-copy {
+                padding-bottom: 28px;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .nav-wrapper {
+                top: 14px;
+            }
+
+            .floating-nav {
+                width: min(100%, 440px);
+                justify-content: space-between;
+                padding-left: 1.2rem;
+                gap: 0.7rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-cta {
+                padding: 0.55rem 1.15rem;
+            }
+
+            .contact-shell {
+                width: min(100% - 32px, 560px);
+                padding-top: 106px;
+                gap: 54px;
+            }
+
+            .photo-wrap {
+                width: 82%;
+            }
+
+            h1 {
+                font-size: clamp(2.15rem, 11vw, 3.1rem);
+            }
+
+            .actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .contact-options,
+            .wechat-card,
+            .contact-btn {
+                width: 100%;
+            }
+
+            .wechat-card {
+                min-width: 0;
+            }
+
+            .contact-options {
+                display: grid;
+            }
+
+            .contact-btn {
+                padding: 0 14px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-wrapper">
+        <nav class="floating-nav" aria-label="主导航">
+            <a href="index.html" class="nav-logo" aria-label="返回作品集首页">portfolio<span>.</span></a>
+            <div class="nav-links">
+                <a href="index.html#work">精选作品</a>
+                <a href="index.html#about">关于我</a>
+            </div>
+            <a href="contact.html" class="nav-cta" aria-current="page">联系我</a>
+        </nav>
+    </div>
+
+    <main class="contact-shell">
+        <section class="photo-wrap" aria-label="个人照片预留位置">
+            <!-- 添加照片时，将下面整个 div 替换为：<img class="profile-photo" src="你的照片.jpg" alt="张洁个人照片"> -->
+            <div class="photo-placeholder">
+                <img class="profile-photo" src="photo.jpg" alt="张洁个人照片">
+                <!--<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="5" width="18" height="15" rx="3"></rect>
+                    <circle cx="9" cy="10" r="2"></circle>
+                    <path d="m5 17 4.2-4.2a1.5 1.5 0 0 1 2.1 0l1.7 1.7 1.2-1.2a1.5 1.5 0 0 1 2.1 0L19 16"></path>
+                </svg>-->
+                <!--<strong>个人照片预留</strong>
+                <span>后续替换为一张照片</span>-->
+            </div>
+        </section>
+
+        <section class="contact-copy" aria-labelledby="contact-title">
+            <h1 id="contact-title">联系方式</h1>
+            <p class="intro">
+                我目前正在寻找 UX / 交互设计师相关的工作机会，期待加入重视产品体验与长期价值的团队。
+                我的经验覆盖 B 端复杂系统、C 端产品与小程序，能够从需求分析、流程梳理到交互落地推动完整设计流程。如果你正在招聘相关岗位，欢迎联系我进一步沟通。
+            </p>
+
+            <div class="contact-options" aria-label="联系方式">
+                <div class="wechat-card">
+                    <!-- 替换微信二维码时，将下面的 src 改成你的图片文件名，例如 wechat-qr.png -->
+                    <img class="wechat-qr" src="weixin.png" alt="微信二维码图片占位，等待替换">
+                    <div>
+                        <strong>微信联系我</strong>
+                        <span>扫码添加微信</span>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="contact-btn" id="copy-email" type="button" data-email="fosse1998@outlook.com">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        复制邮箱
+                    </button>
+                    <a class="contact-btn resume" href="简历.pdf" target="_blank" rel="noopener">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                        查看简历.pdf
+                    </a>
+                </div>
+            </div>
+
+            <p class="closing">下一段经历，也许可以一起创造。Let's create together.</p>
+            <div class="contact-meta">
+                <a href="mailto:fosse1998@outlook.com">fosse1998@outlook.com</a>
+                <a href="tel:+8618705153141">+86 187 0515 3141</a>
+            </div>
+        </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">邮箱已复制</div>
+
+    <script>
+        const copyButton = document.getElementById('copy-email');
+        const toast = document.getElementById('toast');
+        let toastTimer;
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            window.clearTimeout(toastTimer);
+            toastTimer = window.setTimeout(() => toast.classList.remove('show'), 1800);
+        }
+
+        copyButton.addEventListener('click', async () => {
+            const email = copyButton.dataset.email;
+            try {
+                await navigator.clipboard.writeText(email);
+                showToast('邮箱已复制');
+            } catch (error) {
+                const input = document.createElement('textarea');
+                input.value = email;
+                input.setAttribute('readonly', '');
+                input.style.position = 'fixed';
+                input.style.opacity = '0';
+                document.body.appendChild(input);
+                input.select();
+                const copied = document.execCommand('copy');
+                input.remove();
+                showToast(copied ? '邮箱已复制' : email);
+            }
+        });
+    </script>
+</body>
+</html>
